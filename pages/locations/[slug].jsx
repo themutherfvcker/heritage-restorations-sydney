@@ -1,173 +1,74 @@
-import { serialize } from 'next-mdx-remote/serialize'
-import { MDXRemote } from 'next-mdx-remote'
 import Head from 'next/head'
 import Link from 'next/link'
 
-const CTAButton = ({ href, children }) => (
-  <a
-    href={href}
-    className="inline-block bg-green-700 hover:bg-green-800 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200 my-6"
-  >
-    {children}
-  </a>
-)
-
-const components = { CTAButton }
-
-export default function LocationPage({ source, frontmatter, relatedServices }) {
-  if (!source) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-900 mb-4">Location Not Found</h1>
-          <Link href="/locations" className="text-green-700 hover:underline">
-            ← Back to Locations
-          </Link>
-        </div>
-      </div>
-    )
-  }
+export default function LocationsPage() {
+  const locations = [
+    {
+      name: 'Paddington',
+      slug: 'paddington', // ← This must match your MDX filename
+      description: 'Victorian terrace specialists for Woollahra Council heritage properties.',
+      council: 'Woollahra Council'
+    },
+    {
+      name: 'Balmain',
+      slug: 'balmain', // ← This must match your MDX filename
+      description: 'Cottage and terrace experts for Inner West Council heritage homes.',
+      council: 'Inner West Council'
+    },
+    {
+      name: 'Surry Hills',
+      slug: 'surry-hills', // ← This must match your MDX filename  
+      description: 'Terrace and warehouse specialists for City of Sydney Council.',
+      council: 'City of Sydney Council'
+    },
+    {
+      name: 'Woollahra',
+      slug: 'woollahra', // ← This must match your MDX filename
+      description: 'Federation and Victorian experts for premium heritage restoration.',
+      council: 'Woollahra Council'
+    }
+  ]
 
   return (
     <>
       <Head>
-        <title>{frontmatter.metaTitle}</title>
-        <meta name="description" content={frontmatter.metaDescription} />
+        <title>Heritage Restoration Locations | Sydney Suburb Specialists</title>
+        <meta name="description" content="Heritage restoration services across Sydney's inner suburbs. Paddington, Balmain, Surry Hills, Woollahra and more." />
       </Head>
       
-      <article className="max-w-6xl mx-auto px-4 py-8">
-        {/* Breadcrumb Navigation */}
-        <nav className="mb-6">
-          <Link href="/" className="text-green-700 hover:underline">Home</Link>
-          <span className="mx-2">/</span>
-          <Link href="/locations" className="text-green-700 hover:underline">Locations</Link>
-          <span className="mx-2">/</span>
-          <span className="text-gray-600 capitalize">{frontmatter.location}</span>
-        </nav>
-        
-        <h1 className="text-4xl font-bold text-gray-900 mb-6">
-          {frontmatter.title}
+      <div className="max-w-6xl mx-auto px-4 py-8">
+        <h1 className="text-4xl font-bold text-gray-900 mb-8">
+          Heritage Restoration Locations
         </h1>
+        <p className="text-xl text-gray-600 mb-12 max-w-3xl">
+          Local heritage restoration expertise across Sydney's inner suburbs. 
+          Our specialists understand each council's heritage requirements and local architectural character.
+        </p>
         
-        <div className="prose prose-lg max-w-none mb-12">
-          <MDXRemote {...source} components={components} />
-        </div>
-        
-        {/* Related Services for this Location */}
-        {relatedServices && relatedServices.length > 0 && (
-          <section className="mt-16">
-            <h2 className="text-2xl font-bold text-gray-900 mb-8">
-              Heritage Services in {frontmatter.location}
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {relatedServices.map((service) => (
-                <div key={service.slug} className="border border-gray-200 rounded-lg p-6 hover:shadow-lg transition-shadow">
-                  <h3 className="text-xl font-semibold text-gray-900 mb-3">
-                    {service.title}
-                  </h3>
-                  <p className="text-gray-600 mb-4">
-                    {service.description}
-                  </p>
-                  <Link 
-                    href={`/services/${service.slug}`}
-                    className="text-green-700 font-semibold hover:underline"
-                  >
-                    Learn More →
-                  </Link>
-                </div>
-              ))}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {locations.map((location) => (
+            <div key={location.slug} className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 hover:shadow-lg transition-shadow">
+              <div className="p-6">
+                <h2 className="text-2xl font-semibold text-gray-900 mb-3">
+                  {location.name}
+                </h2>
+                <p className="text-gray-600 mb-2">
+                  {location.description}
+                </p>
+                <p className="text-sm text-gray-500 mb-4">
+                  Council: {location.council}
+                </p>
+                <Link 
+                  href={`/locations/${location.slug}`}
+                  className="inline-block bg-green-700 text-white px-4 py-2 rounded hover:bg-green-800 transition-colors"
+                >
+                  View {location.name} Services
+                </Link>
+              </div>
             </div>
-          </section>
-        )}
-      </article>
+          ))}
+        </div>
+      </div>
     </>
   )
-}
-
-// This tells Next.js which pages to generate
-export async function getStaticPaths() {
-  // For now, we'll manually define the paths to avoid conflicts
-  // This ensures no duplicate paths are generated
-  const paths = [
-    { params: { slug: 'heritage-restoration-paddington' } },
-    { params: { slug: 'heritage-restoration-balmain' } },
-    { params: { slug: 'heritage-restoration-surry-hills' } },
-    { params: { slug: 'heritage-restoration-woollahra' } },
-  ]
-  
-  return { 
-    paths,
-    fallback: false // Return 404 for any slugs not in this list
-  }
-}
-
-// This fetches the data for each page
-export async function getStaticProps({ params }) {
-  const fs = await import('fs')
-  const path = await import('path')
-  
-  // Only process slugs that we explicitly defined above
-  const validSlugs = [
-    'heritage-restoration-paddington',
-    'heritage-restoration-balmain', 
-    'heritage-restoration-surry-hills',
-    'heritage-restoration-woollahra'
-  ]
-  
-  if (!validSlugs.includes(params.slug)) {
-    return {
-      notFound: true
-    }
-  }
-  
-  const locationPath = path.join(process.cwd(), 'content/locations', `${params.slug}.mdx`)
-  
-  try {
-    const source = fs.readFileSync(locationPath, 'utf8')
-    const mdxSource = await serialize(source, { parseFrontmatter: true })
-    
-    // Get related services for this location
-    const servicesPath = path.join(process.cwd(), 'content/services')
-    let relatedServices = []
-    
-    try {
-      const serviceFiles = fs.readdirSync(servicesPath)
-      
-      relatedServices = await Promise.all(
-        serviceFiles.map(async (filename) => {
-          if (!filename.endsWith('.mdx')) return null
-          
-          const servicePath = path.join(servicesPath, filename)
-          const serviceSource = fs.readFileSync(servicePath, 'utf8')
-          const serviceMdx = await serialize(serviceSource, { parseFrontmatter: true })
-          
-          // Check if this service is related to the current location
-          if (serviceMdx.frontmatter.locations?.includes(mdxSource.frontmatter.location)) {
-            return {
-              title: serviceMdx.frontmatter.title,
-              slug: serviceMdx.frontmatter.slug,
-              description: serviceMdx.frontmatter.metaDescription
-            }
-          }
-          return null
-        })
-      ).then(services => services.filter(service => service !== null))
-    } catch (error) {
-      // Services directory might not exist yet
-      relatedServices = []
-    }
-
-    return {
-      props: {
-        source: mdxSource,
-        frontmatter: mdxSource.frontmatter,
-        relatedServices
-      }
-    }
-  } catch (error) {
-    // If the file doesn't exist, return 404
-    return {
-      notFound: true
-    }
-  }
 }
