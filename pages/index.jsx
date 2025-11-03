@@ -1,58 +1,35 @@
-// pages/index.jsx
-// Home page for the heritage restoration site. This page provides an overview and links to services and locations.
-
-import Head from 'next/head'
-import Link from 'next/link'
-import CTAButton from '../components/CTAButton'
-
 export default function Home() {
   return (
-    <>
-      <Head>
-        <title>Heritage Restoration Experts | Sydney</title>
-        <meta
-          name="description"
-          content="Specialist heritage restoration services for Sydney's period homes. Roof restoration, timber windows, sandstone repair, and more."
-        />
-      </Head>
-      <section className="bg-gray-100 py-20">
-        <div className="max-w-6xl mx-auto px-4 text-center">
-          <h1 className="text-5xl md:text-6xl font-serif font-bold text-charcoal mb-6">
-            Preserve Your Heritage Home
-          </h1>
-          <p className="text-xl text-gray-700 mb-8">
-            We connect you with trusted tradespeople who specialize in restoring Sydney's unique period properties. From roofs and windows to sandstone and ironwork, our experts bring heritage homes back to life.
-          </p>
-          <CTAButton href="/contact" variant="dark">
-            Get Your Free Quote
-          </CTAButton>
-        </div>
-      </section>
-      <section className="max-w-6xl mx-auto px-4 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="p-6 bg-white rounded-lg shadow-md">
-            <h2 className="text-2xl font-serif font-semibold text-charcoal mb-3">Services</h2>
-            <p className="text-gray-600 mb-4">Explore our comprehensive range of heritage restoration services.</p>
-            <Link href="/services" className="text-forest-green font-semibold hover:underline">
-              View Services →
-            </Link>
+    <div className="min-h-screen bg-white">
+      <main className="max-w-6xl mx-auto px-4 py-16">
+        <h1 className="text-5xl font-serif font-bold text-gray-900 mb-6 text-center">
+          Sydney Heritage Restoration Specialists
+        </h1>
+        <p className="text-xl text-gray-600 mb-12 text-center max-w-3xl mx-auto">
+          Preserving the character and craftsmanship of Sydney's period homes through expert restoration services.
+        </p>
+        
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+          <div className="bg-gray-50 p-6 rounded-lg">
+            <h3 className="text-xl font-semibold mb-3">Heritage Roof Restoration</h3>
+            <p className="text-gray-600">Specialist terracotta tile and slate roof repairs for period homes.</p>
           </div>
-          <div className="p-6 bg-white rounded-lg shadow-md">
-            <h2 className="text-2xl font-serif font-semibold text-charcoal mb-3">Locations</h2>
-            <p className="text-gray-600 mb-4">See where we operate and how we tailor our services to each area.</p>
-            <Link href="/locations" className="text-forest-green font-semibold hover:underline">
-              View Locations →
-            </Link>
+          <div className="bg-gray-50 p-6 rounded-lg">
+            <h3 className="text-xl font-semibold mb-3">Timber Window Restoration</h3>
+            <p className="text-gray-600">Preserving original sash windows with period-appropriate techniques.</p>
           </div>
-          <div className="p-6 bg-white rounded-lg shadow-md">
-            <h2 className="text-2xl font-serif font-semibold text-charcoal mb-3">Blog</h2>
-            <p className="text-gray-600 mb-4">Read expert tips and insights on heritage restoration.</p>
-            <Link href="/blog" className="text-forest-green font-semibold hover:underline">
-              View Blog →
-            </Link>
+          <div className="bg-gray-50 p-6 rounded-lg">
+            <h3 className="text-xl font-semibold mb-3">Sandstone Repair</h3>
+            <p className="text-gray-600">Expert stonework restoration for Sydney's heritage buildings.</p>
           </div>
         </div>
-      </section>
-    </>
+
+        <div className="text-center">
+          <button className="bg-green-700 hover:bg-green-800 text-white px-8 py-3 rounded-lg font-semibold transition-colors">
+            Get a Heritage Assessment
+          </button>
+        </div>
+      </main>
+    </div>
   )
 }
