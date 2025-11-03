@@ -3,6 +3,11 @@ import { MDXRemote } from 'next-mdx-remote'
 import Head from 'next/head'
 import Link from 'next/link'
 
+// Import the new components
+import BeforeAfterSlider from '../../components/BeforeAfterSlider'
+import MaterialsTable from '../../components/MaterialsTable'
+import ComparisonTable from '../../components/ComparisonTable'
+
 const CTAButton = ({ href, children }) => (
   <a
     href={href}
@@ -12,7 +17,13 @@ const CTAButton = ({ href, children }) => (
   </a>
 )
 
-const components = { CTAButton }
+// Include all components in the components object
+const components = { 
+  CTAButton, 
+  BeforeAfterSlider,
+  MaterialsTable, 
+  ComparisonTable 
+}
 
 export default function ServicePage({ source, frontmatter }) {
   if (!source) {
@@ -35,7 +46,7 @@ export default function ServicePage({ source, frontmatter }) {
         <meta name="description" content={frontmatter.metaDescription} />
       </Head>
       
-      <article className="max-w-4xl mx-auto px-4 py-8">
+      <article className="max-w-6xl mx-auto px-4 py-8">
         <nav className="mb-6">
           <Link href="/" className="text-green-700 hover:underline">Home</Link>
           <span className="mx-2">/</span>
