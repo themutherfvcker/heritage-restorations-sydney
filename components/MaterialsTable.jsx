@@ -1,4 +1,3 @@
-// components/MaterialsTable.jsx
 export default function MaterialsTable({ materials }) {
   return (
     <div className="my-8 overflow-x-auto">
