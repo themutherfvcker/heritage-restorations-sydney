@@ -3,7 +3,7 @@ import { MDXRemote } from 'next-mdx-remote'
 import Head from 'next/head'
 import Link from 'next/link'
 
-// Import all components
+// Import all components with proper paths
 import BeforeAfterSlider from '../../components/BeforeAfterSlider'
 import MaterialsTable from '../../components/MaterialsTable'
 import ComparisonTable from '../../components/ComparisonTable'
@@ -63,5 +63,47 @@ export default function ServicePage({ source, frontmatter }) {
   )
 }
 
-// Keep the existing getStaticPaths and getStaticProps functions...
-// [Rest of the file remains the same]
+export async function getStaticPaths() {
+  const fs = await import('fs')
+  const path = await import('path')
+  
+  const servicesPath = path.join(process.cwd(), 'content/services')
+  
+  try {
+    const filenames = fs.readdirSync(servicesPath)
+    const mdxFiles = filenames.filter(filename => filename.endsWith('.mdx'))
+    
+    const paths = mdxFiles.map(filename => ({
+      params: { slug: filename.replace(/\.mdx$/, '') }
+    }))
+    
+    return { paths, fallback: false }
+  } catch (error) {
+    return { paths: [], fallback: false }
+  }
+}
+
+export async function getStaticProps({ params }) {
+  const fs = await import('fs')
+  const path = await import('path')
+  
+  const servicePath = path.join(process.cwd(), 'content/services', `${params.slug}.mdx`)
+  
+  try {
+    const source = fs.readFileSync(servicePath, 'utf8')
+    const mdxSource = await serialize(source, { 
+      parseFrontmatter: true 
+    })
+    
+    return {
+      props: {
+        source: mdxSource,
+        frontmatter: mdxSource.frontmatter
+      }
+    }
+  } catch (error) {
+    return {
+      notFound: true
+    }
+  }
+}
