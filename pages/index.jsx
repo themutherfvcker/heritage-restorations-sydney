@@ -22,6 +22,16 @@ export default function Home() {
             <h3 className="text-xl font-semibold mb-3">Sandstone Repair</h3>
             <p className="text-gray-600">Expert stonework restoration for Sydney's heritage buildings.</p>
           </div>
+{/* Add this to your existing grid in pages/index.jsx */}
+<div className="bg-gray-50 p-6 rounded-lg hover:shadow-lg transition-shadow">
+  <h3 className="text-xl font-semibold mb-3">Location Specialists</h3>
+  <p className="text-gray-600 mb-4">Heritage experts across Sydney's inner suburbs including Paddington, Balmain, and Surry Hills.</p>
+  <Link href="/locations" className="text-green-700 font-semibold hover:underline">
+    View Locations →
+  </Link>
+</div>
+
+          
         </div>
 
         <div className="text-center">
