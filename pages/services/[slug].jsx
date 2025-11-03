@@ -1,8 +1,8 @@
 import { serialize } from 'next-mdx-remote/serialize'
 import { MDXRemote } from 'next-mdx-remote'
 import Head from 'next/head'
+import Link from 'next/link'
 
-// Simple button component for MDX
 const CTAButton = ({ href, children }) => (
   <a
     href={href}
@@ -15,6 +15,19 @@ const CTAButton = ({ href, children }) => (
 const components = { CTAButton }
 
 export default function ServicePage({ source, frontmatter }) {
+  if (!source) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold text-gray-900 mb-4">Service Not Found</h1>
+          <Link href="/services" className="text-green-700 hover:underline">
+            ← Back to Services
+          </Link>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <>
       <Head>
@@ -23,6 +36,14 @@ export default function ServicePage({ source, frontmatter }) {
       </Head>
       
       <article className="max-w-4xl mx-auto px-4 py-8">
+        <nav className="mb-6">
+          <Link href="/" className="text-green-700 hover:underline">Home</Link>
+          <span className="mx-2">/</span>
+          <Link href="/services" className="text-green-700 hover:underline">Services</Link>
+          <span className="mx-2">/</span>
+          <span className="text-gray-600">{frontmatter.title}</span>
+        </nav>
+        
         <h1 className="text-4xl font-bold text-gray-900 mb-6">
           {frontmatter.title}
         </h1>
@@ -35,9 +56,7 @@ export default function ServicePage({ source, frontmatter }) {
   )
 }
 
-// This tells Next.js which pages to generate
 export async function getStaticPaths() {
-  // We need to dynamically import the file system functions
   const fs = await import('fs')
   const path = await import('path')
   
@@ -45,8 +64,6 @@ export async function getStaticPaths() {
   
   try {
     const filenames = fs.readdirSync(servicesPath)
-    
-    // Only include .mdx files, ignore .gitkeep and other files
     const mdxFiles = filenames.filter(filename => filename.endsWith('.mdx'))
     
     const paths = mdxFiles.map(filename => ({
@@ -55,12 +72,10 @@ export async function getStaticPaths() {
     
     return { paths, fallback: false }
   } catch (error) {
-    // If services directory doesn't exist yet, return empty paths
     return { paths: [], fallback: false }
   }
 }
 
-// This fetches the data for each page
 export async function getStaticProps({ params }) {
   const fs = await import('fs')
   const path = await import('path')
@@ -80,7 +95,6 @@ export async function getStaticProps({ params }) {
       }
     }
   } catch (error) {
-    // If the file doesn't exist, return 404
     return {
       notFound: true
     }
