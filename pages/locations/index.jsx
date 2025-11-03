@@ -5,25 +5,25 @@ export default function LocationsPage() {
   const locations = [
     {
       name: 'Paddington',
-      slug: 'heritage-restoration-paddington',
+      slug: 'paddington', // ← Match your actual filename
       description: 'Victorian terrace specialists for Woollahra Council heritage properties.',
       council: 'Woollahra Council'
     },
     {
       name: 'Balmain',
-      slug: 'heritage-restoration-balmain', 
+      slug: 'balmain', // ← Match your actual filename
       description: 'Cottage and terrace experts for Inner West Council heritage homes.',
       council: 'Inner West Council'
     },
     {
       name: 'Surry Hills',
-      slug: 'heritage-restoration-surry-hills',
+      slug: 'surry-hills', // ← Match your actual filename  
       description: 'Terrace and warehouse specialists for City of Sydney Council.',
       council: 'City of Sydney Council'
     },
     {
       name: 'Woollahra',
-      slug: 'heritage-restoration-woollahra',
+      slug: 'woollahra', // ← Match your actual filename
       description: 'Federation and Victorian experts for premium heritage restoration.',
       council: 'Woollahra Council'
     }
