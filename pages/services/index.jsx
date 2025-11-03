@@ -5,32 +5,32 @@ export default function ServicesPage() {
   const services = [
     {
       title: 'Heritage Roof Restoration',
-      slug: 'heritage-roof-restoration-sydney',
+      slug: 'heritage-roof-restoration', // ← REMOVED "-sydney"
       description: 'Specialist terracotta tile and slate roof repairs for period homes.',
     },
     {
       title: 'Timber Window Restoration',
-      slug: 'timber-window-restoration-sydney',
+      slug: 'timber-window-restoration', // ← REMOVED "-sydney"
       description: 'Repair and restore original sash windows with traditional techniques.',
     },
     {
       title: 'Sandstone Repair & Restoration',
-      slug: 'sandstone-repair-sydney',
+      slug: 'sandstone-repair', // ← REMOVED "-sydney"
       description: 'Expert stonework restoration for Sydney heritage buildings.',
     },
     {
       title: 'Heritage Painting & Finishes',
-      slug: 'heritage-painting-sydney',
+      slug: 'heritage-painting', // ← REMOVED "-sydney"
       description: 'Period-appropriate colour restoration using traditional materials.',
     },
     {
       title: 'Structural Restoration & Repairs',
-      slug: 'structural-restoration-sydney',
+      slug: 'structural-restoration', // ← REMOVED "-sydney"
       description: 'Address structural issues while preserving historical integrity.',
     },
     {
       title: 'Decorative Plasterwork Restoration',
-      slug: 'plasterwork-restoration-sydney',
+      slug: 'plasterwork-restoration', // ← REMOVED "-sydney"
       description: 'Repair and replicate cornices, ceiling roses, and ornamental plaster.',
     }
   ]
