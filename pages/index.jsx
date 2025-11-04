@@ -129,6 +129,13 @@ export default function Home() {
             Get expert advice and quotes from Sydney's trusted heritage restoration specialists.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            {/* In your homepage CTA section, add this button */}
+<Link 
+  href="/contact" 
+  className="bg-green-700 hover:bg-green-800 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-colors"
+>
+  Get Free Assessment
+</Link>
             <Link 
               href="/services" 
               className="bg-white text-green-700 hover:bg-gray-100 px-8 py-4 rounded-lg font-semibold text-lg transition-colors"
