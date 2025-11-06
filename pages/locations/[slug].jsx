@@ -6,6 +6,10 @@ import { MDXRemote } from "next-mdx-remote";
 import Head from "next/head";
 import Link from "next/link";
 
+import CTAButton from "../../components/CTAButton";
+import ServiceSection from "../../components/ServiceSection";
+import ComparisonTable from "../../components/ComparisonTable";
+
 const LOCATIONS_DIR = path.join(process.cwd(), "content", "locations");
 
 // Utility: get all slugs from content/locations/*.mdx
@@ -46,7 +50,6 @@ export async function getStaticProps({ params }) {
     scope: data || {},
   });
 
-  // Clean title fallback (e.g. "surry-hills" -> "Surry Hills")
   const formattedSlug =
     slug
       .replace(/-/g, " ")
@@ -94,17 +97,14 @@ export default function LocationPage({ slug, mdxSource, frontmatter }) {
                   {intro}
                 </p>
                 <div className="flex flex-wrap gap-3">
-                  <Link
-                    href="/contact"
-                    className="inline-flex items-center justify-center rounded-md border border-transparent bg-forest-green px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-emerald-700 transition"
-                  >
-                    Request an Inspection
-                  </Link>
+                  <CTAButton href="/contact">
+                    Request an inspection
+                  </CTAButton>
                   <Link
                     href="/services"
                     className="inline-flex items-center justify-center rounded-md border border-forest-green px-5 py-2.5 text-sm font-semibold text-forest-green hover:bg-heritage-cream"
                   >
-                    View Heritage Services
+                    View heritage services
                   </Link>
                 </div>
               </div>
@@ -122,10 +122,17 @@ export default function LocationPage({ slug, mdxSource, frontmatter }) {
           </div>
         </section>
 
-        {/* Content */}
+        {/* MDX content */}
         <section className="max-w-3xl mx-auto px-4 pb-16 md:pb-20">
           <article className="prose prose-lg max-w-none prose-headings:text-charcoal prose-a:text-forest-green">
-            <MDXRemote {...mdxSource} />
+            <MDXRemote
+              {...mdxSource}
+              components={{
+                CTAButton,
+                ServiceSection,
+                ComparisonTable,
+              }}
+            />
           </article>
 
           <div className="mt-10 border-t border-gray-200 pt-6 flex justify-between items-center text-sm text-gray-600">
