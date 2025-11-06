@@ -1,25 +1,61 @@
-export default function ServiceHero({ title, description, image }) {
+export default function ServiceHero({
+  title,
+  subtitle,
+  intro,
+  image,
+  tag = "Heritage Service",
+  className = "",
+  children,
+  ...props
+}) {
+  const heroTitle = title || "Heritage service";
+  const heroIntro =
+    intro ||
+    "Specialist heritage restoration for Sydney terraces, cottages and character homes.";
+  const heroImage = image || "/images/service-hero-placeholder.jpg";
+
   return (
-    <section className="relative h-96 bg-gray-900">
-      {/* Background image with overlay */}
-      <div 
-        className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: `url(${image || '/images/service-hero-placeholder.jpg'})` }}
-      >
-        <div className="absolute inset-0 bg-gradient-to-r from-green-900/70 to-gray-900/70"></div>
-      </div>
-      
-      {/* Content */}
-      <div className="relative h-full flex items-center justify-center text-center text-white">
-        <div className="max-w-4xl px-4">
-          <h1 className="text-4xl md:text-5xl font-serif font-bold mb-4">
-            {title}
-          </h1>
-          <p className="text-xl md:text-2xl opacity-90 max-w-2xl mx-auto">
-            {description}
-          </p>
+    <section
+      className={`relative overflow-hidden ${className}`}
+      {...props}
+    >
+      <div className="max-w-6xl mx-auto px-4 py-12 md:py-16">
+        <div className="grid md:grid-cols-2 gap-10 items-center">
+          <div>
+            {tag && (
+              <p className="text-xs md:text-sm font-semibold tracking-wide text-forest-green mb-2 uppercase">
+                {tag}
+              </p>
+            )}
+            {subtitle && (
+              <p className="text-sm text-heritage-brown mb-2">
+                {subtitle}
+              </p>
+            )}
+            <h1 className="text-3xl md:text-4xl font-bold text-charcoal mb-4">
+              {heroTitle}
+            </h1>
+            {heroIntro && (
+              <p className="text-base md:text-lg text-gray-700 mb-4">
+                {heroIntro}
+              </p>
+            )}
+
+            {/* Any children passed from MDX (eg. CTAButton, small lists, badges) */}
+            {children && <div className="mt-4 flex flex-wrap gap-3">{children}</div>}
+          </div>
+
+          <div className="relative">
+            <div className="aspect-[4/3] rounded-xl overflow-hidden shadow-lg bg-sandstone border border-heritage-brown/10">
+              <img
+                src={heroImage}
+                alt={heroTitle}
+                className="h-full w-full object-cover"
+              />
+            </div>
+          </div>
         </div>
       </div>
     </section>
-  )
+  );
 }
