@@ -8,6 +8,7 @@ import Link from "next/link";
 
 import CTAButton from "../../components/CTAButton";
 import ServiceSection from "../../components/ServiceSection";
+import ComparisonTable from "../../components/ComparisonTable";
 
 const SERVICES_DIR = path.join(process.cwd(), "content", "services");
 
@@ -138,6 +139,7 @@ export default function ServicePage({ slug, mdxSource, frontmatter }) {
               components={{
                 CTAButton,
                 ServiceSection,
+                ComparisonTable,
               }}
             />
           </article>
