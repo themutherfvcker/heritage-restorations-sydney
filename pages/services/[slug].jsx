@@ -1,109 +1,157 @@
-import { serialize } from 'next-mdx-remote/serialize'
-import { MDXRemote } from 'next-mdx-remote'
-import Head from 'next/head'
-import Link from 'next/link'
+import fs from "fs";
+import path from "path";
+import matter from "gray-matter";
+import { serialize } from "next-mdx-remote/serialize";
+import { MDXRemote } from "next-mdx-remote";
+import Head from "next/head";
+import Link from "next/link";
 
-// Import all components with proper paths
-import BeforeAfterSlider from '../../components/BeforeAfterSlider'
-import MaterialsTable from '../../components/MaterialsTable'
-import ComparisonTable from '../../components/ComparisonTable'
-import ServiceHero from '../../components/ServiceHero'
-import TextWithImage from '../../components/TextWithImage'
-import MaterialsGallery from '../../components/MaterialsGallery'
-import ProcessTimeline from '../../components/ProcessTimeline'
-import ProjectGallery from '../../components/ProjectGallery'
+import CTAButton from "../../components/CTAButton";
+import ServiceSection from "../../components/ServiceSection";
 
-const CTAButton = ({ href, children }) => (
-  <a
-    href={href}
-    className="inline-block bg-green-700 hover:bg-green-800 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200 my-6"
-  >
-    {children}
-  </a>
-)
+const SERVICES_DIR = path.join(process.cwd(), "content", "services");
 
-// Include ALL components
-const components = { 
-  CTAButton, 
-  BeforeAfterSlider,
-  MaterialsTable, 
-  ComparisonTable,
-  ServiceHero,
-  TextWithImage,
-  MaterialsGallery,
-  ProcessTimeline,
-  ProjectGallery
+// Get all service slugs from content/services/*.mdx
+function getServiceSlugs() {
+  if (!fs.existsSync(SERVICES_DIR)) return [];
+  return fs
+    .readdirSync(SERVICES_DIR)
+    .filter((file) => file.endsWith(".mdx"))
+    .map((file) => file.replace(/\.mdx$/, ""));
 }
 
-export default function ServicePage({ source, frontmatter }) {
-  if (!source) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-900 mb-4">Service Not Found</h1>
-          <Link href="/services" className="text-green-700 hover:underline">
-            ← Back to Services
-          </Link>
-        </div>
-      </div>
-    )
+export async function getStaticPaths() {
+  const slugs = getServiceSlugs();
+
+  const paths = slugs.map((slug) => ({
+    params: { slug },
+  }));
+
+  return {
+    paths,
+    fallback: false, // all services must exist at build time
+  };
+}
+
+export async function getStaticProps({ params }) {
+  const { slug } = params;
+
+  const filePath = path.join(SERVICES_DIR, `${slug}.mdx`);
+
+  if (!fs.existsSync(filePath)) {
+    return { notFound: true };
   }
+
+  const raw = fs.readFileSync(filePath, "utf8");
+  const { content, data } = matter(raw);
+
+  const mdxSource = await serialize(content, {
+    scope: data || {},
+  });
+
+  const formattedSlug =
+    slug
+      .replace(/-/g, " ")
+      .replace(/\b\w/g, (c) => c.toUpperCase()) || "Service";
+
+  const title =
+    data.title || `${formattedSlug} | Heritage Restorations Sydney`;
+
+  const intro =
+    data.intro ||
+    `Specialist heritage ${formattedSlug.toLowerCase()} for Sydney terraces, cottages and character homes.`;
+
+  const heroImage =
+    data.heroImage || "/images/service-hero-placeholder.jpg";
+
+  return {
+    props: {
+      slug,
+      mdxSource,
+      frontmatter: {
+        ...data,
+        title,
+        intro,
+        heroImage,
+      },
+    },
+  };
+}
+
+export default function ServicePage({ slug, mdxSource, frontmatter }) {
+  const { title, intro, heroImage } = frontmatter;
 
   return (
     <>
       <Head>
-        <title>{frontmatter.metaTitle}</title>
-        <meta name="description" content={frontmatter.metaDescription} />
+        <title>{title}</title>
+        <meta name="description" content={intro} />
       </Head>
-      
-      <article className="min-h-screen">
-        <MDXRemote {...source} components={components} />
-      </article>
+
+      <main className="bg-heritage-cream min-h-screen">
+        {/* Hero */}
+        <section className="relative overflow-hidden">
+          <div className="max-w-6xl mx-auto px-4 py-16 md:py-20">
+            <div className="grid md:grid-cols-2 gap-10 items-center">
+              <div>
+                <p className="text-sm font-semibold tracking-wide text-forest-green mb-2 uppercase">
+                  Heritage Service
+                </p>
+                <h1 className="text-3xl md:text-4xl font-bold text-charcoal mb-4">
+                  {title}
+                </h1>
+                <p className="text-base md:text-lg text-gray-700 mb-6">
+                  {intro}
+                </p>
+
+                <div className="flex flex-wrap gap-3">
+                  <CTAButton href="/contact">
+                    Request an inspection
+                  </CTAButton>
+                  <Link
+                    href="/services"
+                    className="inline-flex items-center justify-center rounded-md border border-forest-green px-5 py-2.5 text-sm font-semibold text-forest-green hover:bg-heritage-cream"
+                  >
+                    View all services
+                  </Link>
+                </div>
+              </div>
+
+              <div className="relative">
+                <div className="aspect-[4/3] rounded-xl overflow-hidden shadow-lg bg-sandstone border border-heritage-brown/10">
+                  <img
+                    src={heroImage}
+                    alt={title}
+                    className="h-full w-full object-cover"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* MDX content */}
+        <section className="max-w-3xl mx-auto px-4 pb-16 md:pb-20">
+          <article className="prose prose-lg max-w-none prose-headings:text-charcoal prose-a:text-forest-green">
+            <MDXRemote
+              {...mdxSource}
+              components={{
+                CTAButton,
+                ServiceSection,
+              }}
+            />
+          </article>
+
+          <div className="mt-10 border-t border-gray-200 pt-6 flex justify-between items-center text-sm text-gray-600">
+            <Link href="/services" className="hover:text-forest-green">
+              ← Back to all services
+            </Link>
+            <Link href="/contact" className="hover:text-forest-green">
+              Book a heritage inspection →
+            </Link>
+          </div>
+        </section>
+      </main>
     </>
-  )
-}
-
-export async function getStaticPaths() {
-  const fs = await import('fs')
-  const path = await import('path')
-  
-  const servicesPath = path.join(process.cwd(), 'content/services')
-  
-  try {
-    const filenames = fs.readdirSync(servicesPath)
-    const mdxFiles = filenames.filter(filename => filename.endsWith('.mdx'))
-    
-    const paths = mdxFiles.map(filename => ({
-      params: { slug: filename.replace(/\.mdx$/, '') }
-    }))
-    
-    return { paths, fallback: false }
-  } catch (error) {
-    return { paths: [], fallback: false }
-  }
-}
-
-export async function getStaticProps({ params }) {
-  const fs = await import('fs')
-  const path = await import('path')
-  
-  const servicePath = path.join(process.cwd(), 'content/services', `${params.slug}.mdx`)
-  
-  try {
-    const source = fs.readFileSync(servicePath, 'utf8')
-    const mdxSource = await serialize(source, { 
-      parseFrontmatter: true 
-    })
-    
-    return {
-      props: {
-        source: mdxSource,
-        frontmatter: mdxSource.frontmatter
-      }
-    }
-  } catch (error) {
-    return {
-      notFound: true
-    }
-  }
+  );
 }
