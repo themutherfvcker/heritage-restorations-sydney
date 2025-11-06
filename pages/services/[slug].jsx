@@ -9,6 +9,7 @@ import Link from "next/link";
 import CTAButton from "../../components/CTAButton";
 import ServiceSection from "../../components/ServiceSection";
 import ComparisonTable from "../../components/ComparisonTable";
+import MaterialsTable from "../../components/MaterialsTable";
 
 const SERVICES_DIR = path.join(process.cwd(), "content", "services");
 
@@ -140,6 +141,7 @@ export default function ServicePage({ slug, mdxSource, frontmatter }) {
                 CTAButton,
                 ServiceSection,
                 ComparisonTable,
+                MaterialsTable,
               }}
             />
           </article>
