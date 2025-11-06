@@ -1,23 +1,28 @@
-// components/Testimonial.jsx
-// Renders a testimonial with an author initial avatar and location.
+export default function Testimonial({
+  name,
+  location,
+  children,
+  quote,
+  className = "",
+  ...props
+}) {
+  const content = quote || children;
 
-export default function Testimonial({ author, location, text }) {
-  const initial = author ? author.charAt(0) : ''
   return (
-    <blockquote className="bg-gray-50 rounded-xl p-8 my-8 border-l-4 border-forest-green">
-      <div className="text-2xl text-charcoal mb-4">“</div>
-      <p className="text-lg text-gray-700 italic mb-6">
-        {text}
-      </p>
-      <footer className="flex items-center">
-        <div className="w-12 h-12 bg-forest-green rounded-full flex items-center justify-center text-white font-bold mr-4">
-          {initial}
-        </div>
-        <div>
-          <div className="font-semibold text-charcoal">{author}</div>
-          <div className="text-gray-600">{location}</div>
-        </div>
-      </footer>
-    </blockquote>
-  )
+    <figure
+      className={`border-l-4 border-forest-green bg-white/80 p-5 rounded-md shadow-sm mb-8 ${className}`}
+      {...props}
+    >
+      <blockquote className="text-gray-800 italic">
+        “{content}”
+      </blockquote>
+      {(name || location) && (
+        <figcaption className="mt-3 text-sm text-gray-600">
+          {name && <span className="font-semibold text-charcoal">{name}</span>}
+          {name && location && <span> · </span>}
+          {location && <span>{location}</span>}
+        </figcaption>
+      )}
+    </figure>
+  );
 }
