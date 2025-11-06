@@ -9,6 +9,7 @@ import Link from "next/link";
 import CTAButton from "../../components/CTAButton";
 import ServiceSection from "../../components/ServiceSection";
 import ComparisonTable from "../../components/ComparisonTable";
+import Testimonial from "../../components/Testimonial";
 
 const LOCATIONS_DIR = path.join(process.cwd(), "content", "locations");
 
@@ -131,6 +132,7 @@ export default function LocationPage({ slug, mdxSource, frontmatter }) {
                 CTAButton,
                 ServiceSection,
                 ComparisonTable,
+                Testimonial,
               }}
             />
           </article>
