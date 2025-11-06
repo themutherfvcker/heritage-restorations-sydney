@@ -10,6 +10,7 @@ import CTAButton from "../../components/CTAButton";
 import ServiceSection from "../../components/ServiceSection";
 import ComparisonTable from "../../components/ComparisonTable";
 import MaterialsTable from "../../components/MaterialsTable";
+import ServiceHero from "../../components/ServiceHero";
 
 const SERVICES_DIR = path.join(process.cwd(), "content", "services");
 
@@ -91,7 +92,7 @@ export default function ServicePage({ slug, mdxSource, frontmatter }) {
       </Head>
 
       <main className="bg-heritage-cream min-h-screen">
-        {/* Hero */}
+        {/* Top-level hero (you can remove this if you want hero entirely controlled via MDX ServiceHero) */}
         <section className="relative overflow-hidden">
           <div className="max-w-6xl mx-auto px-4 py-16 md:py-20">
             <div className="grid md:grid-cols-2 gap-10 items-center">
@@ -142,6 +143,7 @@ export default function ServicePage({ slug, mdxSource, frontmatter }) {
                 ServiceSection,
                 ComparisonTable,
                 MaterialsTable,
+                ServiceHero,
               }}
             />
           </article>
