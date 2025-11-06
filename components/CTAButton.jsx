@@ -1,18 +1,38 @@
-// components/CTAButton.jsx
-// A simple call‑to‑action button component used throughout the site.
-// It renders a styled link with customizable text and href.
+import Link from "next/link";
 
-export default function CTAButton({ href, children, variant = 'dark' }) {
-  const variantClasses = {
-    dark: 'bg-forest-green hover:bg-forest-green/90 text-white',
-    light: 'bg-white hover:bg-gray-100 text-forest-green border border-forest-green',
+export default function CTAButton({
+  href = "#",
+  children,
+  className = "",
+  ...props
+}) {
+  const baseClasses =
+    "inline-flex items-center justify-center rounded-md bg-forest-green px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-emerald-700 transition";
+  const combined = `${baseClasses} ${className}`.trim();
+
+  // If it's an external link or plain href, render <a>
+  if (!href || href === "#") {
+    return (
+      <button className={combined} type="button" {...props}>
+        {children}
+      </button>
+    );
   }
+
+  if (href.startsWith("http")) {
+    return (
+      <a href={href} className={combined} {...props}>
+        {children}
+      </a>
+    );
+  }
+
+  // Internal Next.js link
   return (
-    <a
-      href={href}
-      className={`inline-block font-semibold py-3 px-6 rounded-lg transition-colors duration-200 ${variantClasses[variant]}`}
-    >
-      {children}
-    </a>
-  )
+    <Link href={href} legacyBehavior>
+      <a className={combined} {...props}>
+        {children}
+      </a>
+    </Link>
+  );
 }
